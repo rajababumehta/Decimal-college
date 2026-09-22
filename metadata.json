@@ -1,0 +1,6 @@
+{
+  "name": "Decimal College",
+  "description": "Official website of Decimal College, a premier +2 college in Panitanki-8, Birgunj, Nepal. Offering programs in Science, Management, Law, Hotel Management, and Education.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
