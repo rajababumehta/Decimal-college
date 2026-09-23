@@ -75,19 +75,19 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <span>Panitanki-8, Birgunj, Nepal • Estd. 2072 B.S.</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white font-serif">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white font-serif">
                 Shaping the Next Generation at <span className="text-[#D4A017]">Decimal College</span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-blue-100 font-light max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-base sm:text-xl text-blue-100 font-light max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 {COLLEGE_INFO.tagline}. A premier +2 academic sanctuary offering world-class learning in Science, Management, Law, Hotel Management, and Education.
               </p>
 
-              <div className="pt-2 flex flex-wrap gap-4 justify-center lg:justify-start">
+              <div className="pt-2 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
                 <button
                   onClick={() => onOpenAdmission()}
                   id="hero-apply-btn"
-                  className="inline-flex items-center gap-2 bg-[#D4A017] hover:bg-[#b88912] text-[#0A2F5C] font-extrabold text-base px-7 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-150 transform hover:-translate-y-0.5 active:translate-y-0"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#D4A017] hover:bg-[#b88912] text-[#0A2F5C] font-extrabold text-base px-7 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-150 transform hover:-translate-y-0.5 active:translate-y-0"
                 >
                   <span>Admission Open 2082/83</span>
                   <ArrowRight className="w-5 h-5 text-[#0A2F5C]" />
@@ -99,7 +99,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   id="hero-contact-btn"
-                  className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white font-semibold text-base px-6 py-3.5 rounded-xl border border-white/20 transition-all backdrop-blur-xs"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white font-semibold text-base px-6 py-3.5 rounded-xl border border-white/20 transition-all backdrop-blur-xs"
                 >
                   <span>Contact & Visit Us</span>
                   <MapPin className="w-4 h-4 text-[#D4A017]" />
@@ -175,13 +175,13 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* Stats Bar */}
-          <div className="mt-16 pt-10 border-t border-blue-800/80 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div className="mt-12 sm:mt-16 pt-8 sm:pt-10 border-t border-blue-800/80 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 text-center">
             {COLLEGE_INFO.stats.map((stat, idx) => (
-              <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-xs">
-                <div className="text-2xl sm:text-3xl font-black text-[#D4A017] font-serif">
+              <div key={idx} className="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-xs">
+                <div className="text-xl sm:text-3xl font-black text-[#D4A017] font-serif">
                   {stat.value}
                 </div>
-                <div className="text-xs sm:text-sm text-slate-200 font-medium mt-1">
+                <div className="text-[11px] sm:text-sm text-slate-200 font-medium mt-1">
                   {stat.label}
                 </div>
               </div>
@@ -192,18 +192,18 @@ export const HomePage: React.FC<HomePageProps> = ({
 
       {/* Short About Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Image & Crest Composition */}
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-slate-100">
               <img 
                 src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=900&q=80" 
                 alt="Students studying at Decimal College" 
-                className="w-full h-80 sm:h-96 object-cover"
+                className="w-full h-72 sm:h-96 object-cover"
               />
             </div>
             {/* Overlay Milestone badge */}
-            <div className="absolute -bottom-5 sm:-bottom-6 right-2 sm:right-6 bg-[#0A2F5C] text-white p-3.5 sm:p-5 rounded-xl shadow-xl border-2 border-[#D4A017] max-w-[240px] sm:max-w-xs">
+            <div className="relative mt-4 sm:mt-0 sm:absolute sm:-bottom-6 sm:right-6 bg-[#0A2F5C] text-white p-4 sm:p-5 rounded-xl shadow-xl border-2 border-[#D4A017] max-w-sm sm:max-w-xs mx-auto sm:mx-0">
               <div className="flex items-center gap-3 mb-1.5">
                 <CollegeLogo size="sm" variant="white" />
                 <div className="text-[#D4A017] font-black text-2xl font-serif">2072 B.S.</div>
@@ -488,33 +488,33 @@ export const HomePage: React.FC<HomePageProps> = ({
 
       {/* Contact & Location Preview Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#0A2F5C] text-white rounded-3xl p-8 sm:p-12 shadow-xl border-4 border-[#D4A017]/30 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="bg-[#0A2F5C] text-white rounded-2xl sm:rounded-3xl p-6 sm:p-12 shadow-xl border-2 sm:border-4 border-[#D4A017]/30 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-8 space-y-4">
             <span className="text-xs font-bold text-[#D4A017] uppercase tracking-widest bg-white/10 px-3 py-1 rounded-md">
               Visit Decimal College
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-serif">
+            <h2 className="text-2xl sm:text-4xl font-extrabold font-serif">
               Ready to Secure Your Academic Future in Birgunj?
             </h2>
             <p className="text-blue-100 text-sm sm:text-base leading-relaxed max-w-2xl">
               Our campus doors at <strong className="text-white">Panitanki-8, Birgunj</strong> are open for student tours, faculty interaction, and admission inquiries. Reach out today to receive the official syllabus prospectus and scholarship forms.
             </p>
 
-            <div className="pt-2 flex flex-wrap gap-6 text-sm text-slate-200">
+            <div className="pt-2 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-6 text-sm text-slate-200">
               <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-[#D4A017]" />
+                <Phone className="w-4 h-4 text-[#D4A017] shrink-0" />
                 <a href={`tel:${COLLEGE_INFO.phone}`} className="hover:text-white font-semibold">
                   {COLLEGE_INFO.phone}
                 </a>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#D4A017]" />
-                <a href={`mailto:${COLLEGE_INFO.email}`} className="hover:text-white font-semibold">
+                <Mail className="w-4 h-4 text-[#D4A017] shrink-0" />
+                <a href={`mailto:${COLLEGE_INFO.email}`} className="hover:text-white font-semibold break-all sm:break-normal">
                   {COLLEGE_INFO.email}
                 </a>
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#D4A017]" />
+                <MapPin className="w-4 h-4 text-[#D4A017] shrink-0" />
                 <span>Panitanki-8, Birgunj, Nepal</span>
               </div>
             </div>

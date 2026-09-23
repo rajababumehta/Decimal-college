@@ -248,13 +248,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setCurrentPage, onOpenAdmi
                 Our programs across Science, Management, Law, Hotel Management, and Education focus on practical skill acquisition, discipline, and strong academic preparation under Far Western University affiliation. We invite you to visit our campus in Panitanki to explore our facilities and begin your +2 academic journey.
               </p>
 
-              <div className="pt-2 flex items-center justify-between border-t border-white/20">
+              <div className="pt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-white/20">
                 <span className="text-xs text-blue-200">
                   Decimal College Administration • Panitanki-8, Birgunj
                 </span>
                 <button
                   onClick={() => onOpenAdmission()}
-                  className="bg-[#D4A017] hover:bg-[#b88912] text-[#0A2F5C] font-bold text-xs px-4 py-2 rounded-lg transition-colors"
+                  className="w-full sm:w-auto bg-[#D4A017] hover:bg-[#b88912] text-[#0A2F5C] font-bold text-xs px-5 py-2.5 rounded-lg transition-colors text-center"
                 >
                   Inquire for Admission
                 </button>

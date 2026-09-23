@@ -6,10 +6,10 @@ export const FloatingWhatsApp: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
 
   return (
-    <div className="hidden sm:flex fixed bottom-6 right-6 z-50 flex-col items-end">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end">
       {/* Mini preview popup */}
       {showPopup && (
-        <div className="mb-3 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in slide-in-from-bottom-3 duration-200">
+        <div className="mb-3 w-[calc(100vw-2rem)] max-w-xs sm:w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in slide-in-from-bottom-3 duration-200">
           <div className="bg-[#0A2F5C] p-3 text-white flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center text-white">
@@ -64,7 +64,7 @@ export const FloatingWhatsApp: React.FC = () => {
           rel="noreferrer"
           id="floating-whatsapp-btn"
           onMouseEnter={() => setShowPopup(true)}
-          className="flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white pl-4 pr-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 border-2 border-white"
+          className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white p-3 sm:pl-4 sm:pr-5 sm:py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 border-2 border-white"
           title="Chat with Decimal College Admissions on WhatsApp"
         >
           <div className="relative">
