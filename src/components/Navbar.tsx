@@ -50,8 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             id="logo-brand-btn"
           >
             {/* Official College Logo */}
-            <CollegeLogo size="sm" className="sm:hidden" variant="navy" />
-            <CollegeLogo size="md" className="hidden sm:inline-flex" variant="navy" />
+            <CollegeLogo size="md" variant="navy" />
 
             <div className="flex flex-col min-w-0">
               <div className="flex items-center gap-1 sm:gap-1.5 leading-none">
