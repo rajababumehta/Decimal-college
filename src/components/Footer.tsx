@@ -241,25 +241,9 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenAdmission 
           </div>
         </div>
 
-        {/* Bottom Bar / Copyright & Developer Credit */}
-        <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+        {/* Bottom Bar / Copyright */}
+        <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
           <p>© {new Date().getFullYear()} Decimal College. All rights reserved. Panitanki-8, Birgunj, Nepal.</p>
-
-          {/* Developer Credit */}
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400">Developed by</span>
-            <a 
-              href={COLLEGE_INFO.developerUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 text-[#D4A017] hover:text-[#f7cb46] font-semibold transition-all duration-200 group shadow-xs"
-              title={`Visit developer portfolio: ${COLLEGE_INFO.developerName}`}
-            >
-              <span>{COLLEGE_INFO.developerName}</span>
-              <ExternalLink className="w-3 h-3 text-[#D4A017] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
-          </div>
-
           <div className="flex items-center gap-4">
             <span className="text-slate-400">Affiliation: Far Western University</span>
             <span>•</span>

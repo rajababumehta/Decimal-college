@@ -35,24 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleNavClick = (id: PageId) => {
     setCurrentPage(id);
     setMobileMenuOpen(false);
-
-    if (id === 'programs') {
-      window.dispatchEvent(new CustomEvent('decimal-show-all-programs'));
-    }
-
-    if (id === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      const el = document.getElementById(id);
-      if (el) {
-        const navHeight = 70;
-        const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
-        window.scrollTo({
-          top: elementPosition - navHeight,
-          behavior: 'smooth'
-        });
-      }
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
