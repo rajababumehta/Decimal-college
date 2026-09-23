@@ -26,6 +26,8 @@ export const COLLEGE_INFO = {
   facebookUrl: "https://www.facebook.com/profile.php?id=100063905773179",
   whatsappUrl: "https://wa.me/9779825223245?text=Hello%20Decimal%20College,%20I%20would%20like%20to%20inquire%20about%20+2%20admissions.",
   officeHours: "Sunday – Friday: 6:30 AM – 4:30 PM (Saturday: Closed)",
+  developerName: "Rajababu Mehta",
+  developerUrl: "https://rajababumehta.com.np/",
   stats: [
     { label: "Established In", value: "2072 B.S.", icon: "Calendar" },
     { label: "Graduated Scholars", value: "2,800+", icon: "GraduationCap" },
