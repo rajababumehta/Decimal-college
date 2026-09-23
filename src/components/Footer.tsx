@@ -21,38 +21,7 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenAdmission }) => {
   const handleNav = (page: PageId) => {
     setCurrentPage(page);
-
-    if (page === 'programs') {
-      window.dispatchEvent(new CustomEvent('decimal-show-all-programs'));
-    }
-
-    if (page === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      const el = document.getElementById(page);
-      if (el) {
-        const navHeight = 70;
-        const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
-        window.scrollTo({
-          top: elementPosition - navHeight,
-          behavior: 'smooth'
-        });
-      }
-    }
-  };
-
-  const handleProgramNav = (progId: string) => {
-    setCurrentPage('programs');
-    window.dispatchEvent(new CustomEvent('decimal-show-program', { detail: progId }));
-    const el = document.getElementById('programs');
-    if (el) {
-      const navHeight = 70;
-      const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
-      window.scrollTo({
-        top: elementPosition - navHeight,
-        behavior: 'smooth'
-      });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -209,9 +178,9 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenAdmission 
                 <li key={prog.id}>
                   <button
                     onClick={() => {
-                      handleProgramNav(prog.id);
+                      handleNav('programs');
                     }}
-                    className="flex items-center justify-between w-full text-left hover:text-[#D4A017] transition-colors group cursor-pointer"
+                    className="flex items-center justify-between w-full text-left hover:text-[#D4A017] transition-colors group"
                     id={`footer-prog-${prog.id}`}
                   >
                     <span className="flex items-center gap-1.5">

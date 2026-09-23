@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Atom, 
   TrendingUp, 
@@ -26,23 +26,6 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
   onOpenAdmission 
 }) => {
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
-
-  useEffect(() => {
-    const handleShowAll = () => {
-      setSelectedFilter('all');
-    };
-    const handleShowSpecific = (e: CustomEvent) => {
-      if (e.detail) {
-        setSelectedFilter(e.detail);
-      }
-    };
-    window.addEventListener('decimal-show-all-programs', handleShowAll as EventListener);
-    window.addEventListener('decimal-show-program', handleShowSpecific as EventListener);
-    return () => {
-      window.removeEventListener('decimal-show-all-programs', handleShowAll as EventListener);
-      window.removeEventListener('decimal-show-program', handleShowSpecific as EventListener);
-    };
-  }, []);
 
   const filteredPrograms = selectedFilter === 'all' 
     ? PROGRAMS 
