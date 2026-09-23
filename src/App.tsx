@@ -3,7 +3,6 @@ import { PageId, Notice } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
-import { MobileBottomBar } from './components/MobileBottomBar';
 import { OnlineAdmissionModal } from './components/OnlineAdmissionModal';
 import { NoticeDetailModal } from './components/NoticeDetailModal';
 
@@ -85,11 +84,8 @@ export default function App() {
         onOpenAdmission={handleOpenAdmission}
       />
 
-      {/* Floating WhatsApp Action Button (Tablet/Laptop/Desktop) */}
+      {/* Floating WhatsApp Action Button */}
       <FloatingWhatsApp />
-
-      {/* Mobile Sticky Quick Action Bar (Smartphones) */}
-      <MobileBottomBar onOpenAdmission={() => handleOpenAdmission()} />
 
       {/* Interactive Online Admission & Application Modal */}
       <OnlineAdmissionModal 
