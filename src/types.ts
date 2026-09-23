@@ -12,6 +12,7 @@ export interface Program {
   keySubjects: string[];
   icon: string;
   image: string;
+  fallbackImage?: string;
   badge?: string;
   highlights: string[];
 }

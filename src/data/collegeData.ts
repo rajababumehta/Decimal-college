@@ -126,7 +126,8 @@ export const PROGRAMS: Program[] = [
       "Extensive law library with Nepal Law Reports and international statutes"
     ],
     icon: "Scale",
-    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1000&q=80"
+    image: "/assets/law.jpg",
+    fallbackImage: "https://i.ibb.co/h1hXsmPy/img-1-1790171238875.jpg"
   },
   {
     id: "hotel-management",
@@ -157,7 +158,8 @@ export const PROGRAMS: Program[] = [
       "Personality grooming, international etiquette, and fluency coaching"
     ],
     icon: "UtensilsCrossed",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80"
+    image: "/assets/hotel-management.jpg",
+    fallbackImage: "https://i.ibb.co/9mDVjxNX/img-6-1790170871771.jpg"
   },
   {
     id: "education",

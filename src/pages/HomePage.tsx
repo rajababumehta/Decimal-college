@@ -294,6 +294,11 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="relative h-48 overflow-hidden">
                   <img 
                     src={prog.image} 
+                    onError={(e) => {
+                      if (prog.fallbackImage) {
+                        (e.target as HTMLImageElement).src = prog.fallbackImage;
+                      }
+                    }}
                     alt={`${prog.name} at Decimal College`} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />

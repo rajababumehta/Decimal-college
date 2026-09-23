@@ -98,6 +98,11 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
             <div className="lg:col-span-5 relative min-h-[300px] lg:min-h-full">
               <img 
                 src={prog.image} 
+                onError={(e) => {
+                  if (prog.fallbackImage) {
+                    (e.target as HTMLImageElement).src = prog.fallbackImage;
+                  }
+                }}
                 alt={`${prog.name} laboratory and classroom at Decimal College`} 
                 className="w-full h-full object-cover"
               />
