@@ -28,7 +28,7 @@ export const OnlineAdmissionModal: React.FC<AdmissionModalProps> = ({
     fullName: '',
     phone: '',
     email: '',
-    program: preSelectedProgramId ? (PROGRAMS.find(p => p.id === preSelectedProgramId)?.name || '+2 Science') : '+2 Science',
+    program: preSelectedProgramId ? (PROGRAMS.find(p => p.id === preSelectedProgramId)?.name || '+2 Law') : '+2 Law',
     seeGpa: '',
     schoolName: '',
     address: 'Birgunj, Parsa',

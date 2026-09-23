@@ -36,35 +36,36 @@ export const COLLEGE_INFO = {
 
 export const PROGRAMS: Program[] = [
   {
-    id: "science",
-    name: "+2 Science",
-    badge: "High Demand",
-    shortDesc: "Comprehensive pre-university curriculum in physical and biological sciences with cutting-edge laboratories.",
-    fullDesc: "Our +2 Science program provides an in-depth foundation for students aspiring to pursue careers in Medicine (MBBS/BDS), Engineering, Computer Science, Biotechnology, and Pure Sciences. Equipped with modern physics, chemistry, and biology labs, students gain both rigorous theoretical insights and hands-on experimental proficiency.",
+    id: "law",
+    name: "+2 Law",
+    badge: "Premier Program",
+    shortDesc: "In-depth foundation in jurisprudence, constitutional rights, procedural laws, and legal advocacy.",
+    fullDesc: "Decimal College's +2 Law stream prepares visionary students for the judiciary, human rights advocacy, corporate consultancy, and public civil service. Students develop critical reasoning, public speaking, moot court argumentation, and constitutional legal interpretation under the mentorship of practicing advocates.",
     duration: "2 Years (Class 11 & 12)",
     affiliation: "National Examinations Board (NEB) / FWU Framework",
-    eligibility: "Minimum GPA 2.0 or above in SEE with minimum 'C+' in Science & Compulsory Mathematics.",
+    eligibility: "Minimum GPA 1.6 or above in SEE with sound aptitude in social studies and language.",
     keySubjects: [
-      "Physics (Theory & Practical)",
-      "Chemistry (Theory & Practical)",
-      "Biology / Computer Science",
-      "Mathematics",
+      "Jurisprudence & Legal Theories",
+      "Procedural Law & Civil/Criminal Justice",
+      "Constitutional Law & Human Rights",
+      "General Principles of Law",
       "Compulsory English & Nepali"
     ],
     careerProspects: [
-      "Medicine & Health Sciences (MBBS, BDS, B.Sc. Nursing, Pharmacy)",
-      "Engineering (Civil, Computer, Electrical, Mechanical)",
-      "IT & Software Engineering (B.Sc. CSIT, BCA, BIT)",
-      "Aviation, Agriculture & Forestry Research"
+      "Bachelor of Arts & Bachelor of Laws (BALLB / LLB)",
+      "Judicial Services, Public Prosecutors & Bench Officers",
+      "Corporate Legal Counsel & Compliance Advisors",
+      "Human Rights Organizations, NGOs & UN Agencies"
     ],
     highlights: [
-      "State-of-the-art Physics, Chemistry, and Biology Laboratories",
-      "Dedicated pre-entrance preparation for CEE (Medical) and IOE (Engineering)",
-      "Audio-visual smart lecture halls with interactive multimedia",
-      "Regular science exhibitions, robotics demos, and field visits"
+      "Regular in-house Moot Court simulations and parliamentary debates",
+      "Observational field visits to Parsa District Court and High Court Janakpur (Birgunj Bench)",
+      "Lectures by senior advocates and former judges",
+      "Extensive law library with Nepal Law Reports and international statutes"
     ],
-    icon: "Atom",
-    image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1000&q=80"
+    icon: "Scale",
+    image: "/assets/law.jpg",
+    fallbackImage: "https://i.ibb.co/h1hXsmPy/img-1-1790171238875.jpg"
   },
   {
     id: "management",
@@ -98,38 +99,6 @@ export const PROGRAMS: Program[] = [
     image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1000&q=80"
   },
   {
-    id: "law",
-    name: "+2 Law",
-    badge: "Premier Program",
-    shortDesc: "In-depth foundation in jurisprudence, constitutional rights, procedural laws, and legal advocacy.",
-    fullDesc: "Decimal College's +2 Law stream prepares visionary students for the judiciary, human rights advocacy, corporate consultancy, and public civil service. Students develop critical reasoning, public speaking, moot court argumentation, and constitutional legal interpretation under the mentorship of practicing advocates.",
-    duration: "2 Years (Class 11 & 12)",
-    affiliation: "National Examinations Board (NEB) / FWU Framework",
-    eligibility: "Minimum GPA 1.6 or above in SEE with sound aptitude in social studies and language.",
-    keySubjects: [
-      "Jurisprudence & Legal Theories",
-      "Procedural Law & Civil/Criminal Justice",
-      "Constitutional Law & Human Rights",
-      "General Principles of Law",
-      "Compulsory English & Nepali"
-    ],
-    careerProspects: [
-      "Bachelor of Arts & Bachelor of Laws (BALLB / LLB)",
-      "Judicial Services, Public Prosecutors & Bench Officers",
-      "Corporate Legal Counsel & Compliance Advisors",
-      "Human Rights Organizations, NGOs & UN Agencies"
-    ],
-    highlights: [
-      "Regular in-house Moot Court simulations and parliamentary debates",
-      "Observational field visits to Parsa District Court and High Court Janakpur (Birgunj Bench)",
-      "Lectures by senior advocates and former judges",
-      "Extensive law library with Nepal Law Reports and international statutes"
-    ],
-    icon: "Scale",
-    image: "/assets/law.jpg",
-    fallbackImage: "https://i.ibb.co/h1hXsmPy/img-1-1790171238875.jpg"
-  },
-  {
     id: "hotel-management",
     name: "+2 Hotel Management",
     badge: "High Placement",
@@ -160,6 +129,37 @@ export const PROGRAMS: Program[] = [
     icon: "UtensilsCrossed",
     image: "/assets/hotel-management.jpg",
     fallbackImage: "https://i.ibb.co/9mDVjxNX/img-6-1790170871771.jpg"
+  },
+  {
+    id: "science",
+    name: "+2 Science",
+    badge: "High Demand",
+    shortDesc: "Comprehensive pre-university curriculum in physical and biological sciences with cutting-edge laboratories.",
+    fullDesc: "Our +2 Science program provides an in-depth foundation for students aspiring to pursue careers in Medicine (MBBS/BDS), Engineering, Computer Science, Biotechnology, and Pure Sciences. Equipped with modern physics, chemistry, and biology labs, students gain both rigorous theoretical insights and hands-on experimental proficiency.",
+    duration: "2 Years (Class 11 & 12)",
+    affiliation: "National Examinations Board (NEB) / FWU Framework",
+    eligibility: "Minimum GPA 2.0 or above in SEE with minimum 'C+' in Science & Compulsory Mathematics.",
+    keySubjects: [
+      "Physics (Theory & Practical)",
+      "Chemistry (Theory & Practical)",
+      "Biology / Computer Science",
+      "Mathematics",
+      "Compulsory English & Nepali"
+    ],
+    careerProspects: [
+      "Medicine & Health Sciences (MBBS, BDS, B.Sc. Nursing, Pharmacy)",
+      "Engineering (Civil, Computer, Electrical, Mechanical)",
+      "IT & Software Engineering (B.Sc. CSIT, BCA, BIT)",
+      "Aviation, Agriculture & Forestry Research"
+    ],
+    highlights: [
+      "State-of-the-art Physics, Chemistry, and Biology Laboratories",
+      "Dedicated pre-entrance preparation for CEE (Medical) and IOE (Engineering)",
+      "Audio-visual smart lecture halls with interactive multimedia",
+      "Regular science exhibitions, robotics demos, and field visits"
+    ],
+    icon: "Atom",
+    image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1000&q=80"
   },
   {
     id: "education",
