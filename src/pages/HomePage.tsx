@@ -121,7 +121,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <CollegeLogo size="xs" variant="white" />
                   </div>
                   <img 
-                    src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80" 
+                    src={COLLEGE_INFO.campusPhotoUrl} 
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = COLLEGE_INFO.campusPhotoDirect;
+                    }}
                     alt="Decimal College Campus and Scholars in Birgunj" 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
