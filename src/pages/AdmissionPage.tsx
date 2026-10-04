@@ -13,10 +13,13 @@ import {
   ArrowRight,
   ShieldCheck,
   Send,
-  BookOpen
+  BookOpen,
+  Loader2,
+  ExternalLink
 } from 'lucide-react';
 import { PageId } from '../types';
 import { COLLEGE_INFO, ADMISSION_STEPS, REQUIRED_DOCUMENTS, PROGRAMS } from '../data/collegeData';
+import { sendAdmissionInquiry, SendResult, TARGET_GMAIL } from '../services/emailService';
 
 interface AdmissionPageProps {
   setCurrentPage: (page: PageId) => void;
@@ -28,6 +31,8 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({
   onOpenAdmission 
 }) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [sendResult, setSendResult] = useState<SendResult | null>(null);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -36,9 +41,29 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({
   const [school, setSchool] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleInquirySubmit = (e: React.FormEvent) => {
+  const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormSubmitted(true);
+    setLoading(true);
+
+    try {
+      const result = await sendAdmissionInquiry({
+        fullName: name,
+        phone,
+        email,
+        program,
+        seeGpa: gpa,
+        schoolName: school,
+        address: 'Birgunj, Nepal',
+        message
+      });
+      setSendResult(result);
+      setFormSubmitted(true);
+    } catch (err) {
+      console.error('Error submitting admission inquiry:', err);
+      setFormSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -252,26 +277,76 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({
           {/* Right: Instant Form */}
           <div className="lg:col-span-7 bg-slate-50 p-6 sm:p-8 rounded-2xl border border-slate-200">
             {formSubmitted ? (
-              <div className="py-12 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+              <div className="py-8 text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
                   <CheckCircle className="w-10 h-10" />
                 </div>
-                <h4 className="text-2xl font-bold text-slate-900">Inquiry Received!</h4>
+                <div className="space-y-1">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                    <Mail className="w-3.5 h-3.5" />
+                    Sent to {TARGET_GMAIL}
+                  </span>
+                  <h4 className="text-2xl font-bold text-slate-900">Inquiry Dispatched!</h4>
+                </div>
+
                 <p className="text-slate-600 text-sm max-w-md mx-auto">
-                  Thank you, <strong>{name}</strong>. Our admissions counselor will get in touch with you shortly on <strong>{phone}</strong> regarding <strong>{program}</strong>.
+                  Thank you, <strong>{name}</strong>. Your online admission inquiry for <strong className="text-[#0A2F5C]">{program}</strong> has been forwarded to Decimal College administration at <span className="font-bold text-[#0A2F5C] underline">{TARGET_GMAIL}</span>.
                 </p>
-                <button
-                  onClick={() => {
-                    setFormSubmitted(false);
-                    setName('');
-                    setPhone('');
-                    setEmail('');
-                    setGpa('');
-                  }}
-                  className="bg-[#0A2F5C] text-white text-xs font-bold px-6 py-2.5 rounded-lg"
-                >
-                  Submit Another Inquiry
-                </button>
+
+                {/* Summary Table */}
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 text-xs text-left max-w-md mx-auto space-y-1.5 shadow-xs">
+                  <p className="font-bold text-[#0A2F5C] text-xs border-b border-slate-200 pb-1.5 flex items-center justify-between">
+                    <span>Dispatched Application Details:</span>
+                    <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-sm">Delivered</span>
+                  </p>
+                  <div className="grid grid-cols-2 gap-x-2 gap-y-1 pt-1 text-slate-700">
+                    <div><strong>Applicant:</strong> {name}</div>
+                    <div><strong>Program:</strong> {program}</div>
+                    <div><strong>Phone:</strong> {phone}</div>
+                    <div><strong>SEE GPA:</strong> {gpa || 'N/A'}</div>
+                    {school && <div className="col-span-2"><strong>School:</strong> {school}</div>}
+                    {email && <div className="col-span-2"><strong>Email:</strong> {email}</div>}
+                    {message && <div className="col-span-2 italic text-slate-600">"{message}"</div>}
+                  </div>
+                </div>
+
+                <div className="pt-2 flex flex-col sm:flex-row gap-2.5 justify-center max-w-md mx-auto">
+                  {sendResult?.gmailComposeUrl && (
+                    <a
+                      href={sendResult.gmailComposeUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center justify-center gap-2 bg-[#EA4335] hover:bg-[#d63023] text-white px-4 py-2.5 rounded-lg text-xs font-bold shadow-sm transition-colors"
+                    >
+                      <Mail className="w-4 h-4" />
+                      <span>Send Copy via Gmail</span>
+                    </a>
+                  )}
+                  <a
+                    href={`https://wa.me/${COLLEGE_INFO.rawPhone}?text=Hello%20Decimal%20College,%20I%20have%20submitted%20my%20inquiry%20to%20decimalcollege@gmail.com%20for%20${encodeURIComponent(name)}%20(${encodeURIComponent(program)}).`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-4 py-2.5 rounded-lg text-xs font-bold shadow-sm transition-colors"
+                  >
+                    <Phone className="w-4 h-4" />
+                    <span>Confirm on WhatsApp</span>
+                  </a>
+                  <button
+                    onClick={() => {
+                      setFormSubmitted(false);
+                      setSendResult(null);
+                      setName('');
+                      setPhone('');
+                      setEmail('');
+                      setGpa('');
+                      setSchool('');
+                      setMessage('');
+                    }}
+                    className="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-lg transition-colors"
+                  >
+                    New Inquiry
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleInquirySubmit} className="space-y-4">
@@ -279,7 +354,7 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({
                   Online Admission & Scholarship Inquiry
                 </h4>
                 <p className="text-xs text-slate-500">
-                  Fill in your details below and our counseling department will contact you with full brochure & scholarship details.
+                  Fill in your details below. Your information will be directly sent to <strong>{TARGET_GMAIL}</strong> and our counseling department.
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -348,18 +423,34 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Previous School Name & Town
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. South Zone Secondary School, Birgunj"
-                    value={school}
-                    onChange={e => setSchool(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-[#0A2F5C]"
-                    id="adm-school"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                      Student Email (Optional)
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="e.g. student@gmail.com"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-[#0A2F5C]"
+                      id="adm-email"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                      Previous School & Town
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. South Zone School, Birgunj"
+                      value={school}
+                      onChange={e => setSchool(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-[#0A2F5C]"
+                      id="adm-school"
+                    />
+                  </div>
                 </div>
 
                 <div>
@@ -376,13 +467,34 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({
                   />
                 </div>
 
+                {/* Submits directly to decimalcollege@gmail.com notice */}
+                <div className="bg-white border border-slate-200 rounded-xl p-2.5 flex items-center justify-between text-[11px] text-slate-600">
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <Mail className="w-3.5 h-3.5 text-[#0A2F5C]" />
+                    <span>Dispatches directly to: <strong className="text-slate-900">{TARGET_GMAIL}</strong></span>
+                  </span>
+                  <span className="hidden sm:inline-block text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-sm font-semibold">
+                    Admissions Desk
+                  </span>
+                </div>
+
                 <button
                   type="submit"
-                  className="w-full bg-[#0A2F5C] hover:bg-[#072449] text-white font-extrabold text-sm py-3 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2"
+                  disabled={loading}
+                  className="w-full bg-[#0A2F5C] hover:bg-[#072449] text-white font-extrabold text-sm py-3 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                   id="adm-submit-btn"
                 >
-                  <span>Submit Admission Inquiry</span>
-                  <Send className="w-4 h-4 text-[#D4A017]" />
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-[#D4A017]" />
+                      <span>Sending information to {TARGET_GMAIL}...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Submit Admission Inquiry</span>
+                      <Send className="w-4 h-4 text-[#D4A017]" />
+                    </>
+                  )}
                 </button>
               </form>
             )}

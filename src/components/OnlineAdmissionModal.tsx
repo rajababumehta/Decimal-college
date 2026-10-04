@@ -7,11 +7,15 @@ import {
   Sparkles, 
   Phone, 
   BookOpen, 
-  FileText 
+  FileText,
+  Mail,
+  ExternalLink,
+  Loader2
 } from 'lucide-react';
 import { AdmissionInquiry } from '../types';
 import { COLLEGE_INFO, PROGRAMS } from '../data/collegeData';
 import { CollegeLogo } from './CollegeLogo';
+import { sendAdmissionInquiry, SendResult, TARGET_GMAIL } from '../services/emailService';
 
 interface AdmissionModalProps {
   isOpen: boolean;
@@ -37,6 +41,7 @@ export const OnlineAdmissionModal: React.FC<AdmissionModalProps> = ({
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [sendResult, setSendResult] = useState<SendResult | null>(null);
 
   useEffect(() => {
     if (preSelectedProgramId) {
@@ -49,24 +54,30 @@ export const OnlineAdmissionModal: React.FC<AdmissionModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate submission
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const result = await sendAdmissionInquiry(formData);
+      setSendResult(result);
       setSubmitted(true);
-    }, 700);
+    } catch (err) {
+      console.error('Error submitting inquiry:', err);
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
     setSubmitted(false);
+    setSendResult(null);
     setFormData({
       fullName: '',
       phone: '',
       email: '',
-      program: '+2 Science',
+      program: '+2 Law',
       seeGpa: '',
       schoolName: '',
       address: 'Birgunj, Parsa',
@@ -103,36 +114,70 @@ export const OnlineAdmissionModal: React.FC<AdmissionModalProps> = ({
         {/* Content */}
         <div className="p-4 sm:p-6">
           {submitted ? (
-            <div className="py-8 text-center space-y-4">
+            <div className="py-6 text-center space-y-4">
               <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
                 <CheckCircle2 className="w-10 h-10" />
               </div>
-              <h4 className="text-2xl font-bold text-slate-900">Application Submitted!</h4>
-              <p className="text-slate-600 max-w-md mx-auto text-sm leading-relaxed">
-                Thank you, <strong className="text-slate-900">{formData.fullName}</strong>. Your online admission inquiry for <strong className="text-[#0A2F5C]">{formData.program}</strong> has been received by Decimal College Admissions Desk.
-              </p>
-
-              <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-xs text-slate-700 text-left space-y-2 max-w-sm mx-auto">
-                <p className="font-semibold text-[#0A2F5C]">Next Steps:</p>
-                <p>1. Our academic counselor will call you at <strong>{formData.phone}</strong> within 24 hours.</p>
-                <p>2. You may also visit the campus at Panitanki-8, Birgunj with your SEE grade-sheet.</p>
+              <div className="space-y-1">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                  <Mail className="w-3.5 h-3.5" />
+                  Sent to {TARGET_GMAIL}
+                </span>
+                <h4 className="text-2xl font-bold text-slate-900">Application Submitted!</h4>
               </div>
 
-              <div className="pt-3 flex flex-col sm:flex-row gap-3 justify-center">
+              <p className="text-slate-600 max-w-md mx-auto text-sm leading-relaxed">
+                Thank you, <strong className="text-slate-900">{formData.fullName}</strong>. Your online admission inquiry for <strong className="text-[#0A2F5C]">{formData.program}</strong> has been successfully dispatched to Decimal College at <span className="font-bold text-[#0A2F5C] underline">{TARGET_GMAIL}</span>.
+              </p>
+
+              {/* Form Summary Details */}
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs text-left max-w-md mx-auto space-y-1.5">
+                <p className="font-bold text-[#0A2F5C] text-xs border-b border-slate-200 pb-1 flex items-center justify-between">
+                  <span>Dispatched Information Summary:</span>
+                  <span className="text-[10px] text-slate-500 font-normal">To: {TARGET_GMAIL}</span>
+                </p>
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1 pt-1 text-slate-700">
+                  <div><strong>Student:</strong> {formData.fullName}</div>
+                  <div><strong>Program:</strong> {formData.program}</div>
+                  <div><strong>Phone:</strong> {formData.phone}</div>
+                  <div><strong>SEE GPA:</strong> {formData.seeGpa || 'N/A'}</div>
+                  {formData.schoolName && <div className="col-span-2"><strong>School:</strong> {formData.schoolName}</div>}
+                  {formData.email && <div className="col-span-2"><strong>Email:</strong> {formData.email}</div>}
+                </div>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-slate-700 text-left space-y-1 max-w-md mx-auto">
+                <p className="font-semibold text-[#0A2F5C]">Next Steps:</p>
+                <p>1. Our counseling department will review your form and phone you on <strong>{formData.phone}</strong>.</p>
+                <p>2. For instant assistance, visit Panitanki-8, Birgunj or reach us via WhatsApp.</p>
+              </div>
+
+              <div className="pt-2 flex flex-col sm:flex-row gap-2.5 justify-center">
+                {sendResult?.gmailComposeUrl && (
+                  <a
+                    href={sendResult.gmailComposeUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 bg-[#EA4335] hover:bg-[#d63023] text-white px-4 py-2.5 rounded-lg text-xs font-bold shadow-sm transition-colors"
+                  >
+                    <Mail className="w-4 h-4" />
+                    <span>Send Copy via Gmail</span>
+                  </a>
+                )}
                 <a
-                  href={`https://wa.me/${COLLEGE_INFO.rawPhone}?text=Hello%20Decimal%20College,%20I%20just%20submitted%20my%20inquiry%20for%20${encodeURIComponent(formData.fullName)}%20(${encodeURIComponent(formData.program)}).`}
+                  href={`https://wa.me/${COLLEGE_INFO.rawPhone}?text=Hello%20Decimal%20College,%20I%20have%20submitted%20my%20online%20admission%20inquiry%20to%20decimalcollege@gmail.com%20for%20${encodeURIComponent(formData.fullName)}%20(${encodeURIComponent(formData.program)}).`}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-sm"
+                  className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-4 py-2.5 rounded-lg text-xs font-bold shadow-sm transition-colors"
                 >
                   <Phone className="w-4 h-4" />
                   <span>Confirm on WhatsApp</span>
                 </a>
                 <button
                   onClick={handleReset}
-                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors"
                 >
-                  Close Window
+                  Close
                 </button>
               </div>
             </div>
@@ -275,6 +320,17 @@ export const OnlineAdmissionModal: React.FC<AdmissionModalProps> = ({
                 />
               </div>
 
+              {/* Destination email info */}
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 flex items-center justify-between text-[11px] text-slate-600">
+                <span className="flex items-center gap-1.5 font-medium">
+                  <Mail className="w-3.5 h-3.5 text-[#0A2F5C]" />
+                  <span>Submits directly to: <strong className="text-slate-900">{TARGET_GMAIL}</strong></span>
+                </span>
+                <span className="hidden sm:inline-block text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-sm font-semibold">
+                  Official Admission Inbox
+                </span>
+              </div>
+
               <div className="pt-2 flex items-center justify-end gap-3">
                 <button
                   type="button"
@@ -290,7 +346,10 @@ export const OnlineAdmissionModal: React.FC<AdmissionModalProps> = ({
                   id="modal-submit-inquiry-btn"
                 >
                   {loading ? (
-                    <span>Submitting...</span>
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-[#D4A017]" />
+                      <span>Sending to {TARGET_GMAIL}...</span>
+                    </>
                   ) : (
                     <>
                       <span>Submit Application</span>

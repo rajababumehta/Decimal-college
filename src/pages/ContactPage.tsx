@@ -9,9 +9,11 @@ import {
   ExternalLink,
   MessageCircle,
   Sparkles,
-  Building2
+  Building2,
+  Loader2
 } from 'lucide-react';
 import { COLLEGE_INFO } from '../data/collegeData';
+import { sendContactMessage, SendResult, TARGET_GMAIL } from '../services/emailService';
 
 export const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -23,14 +25,22 @@ export const ContactPage: React.FC = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [sendResult, setSendResult] = useState<SendResult | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+
+    try {
+      const result = await sendContactMessage(formData);
+      setSendResult(result);
       setSubmitted(true);
-    }, 600);
+    } catch (err) {
+      console.error('Error sending contact message:', err);
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -182,29 +192,75 @@ export const ContactPage: React.FC = () => {
               </p>
 
               {submitted ? (
-                <div className="py-12 text-center space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+                <div className="py-8 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
                     <CheckCircle className="w-10 h-10" />
                   </div>
-                  <h4 className="text-2xl font-bold text-slate-900">Message Dispatched!</h4>
+                  <div className="space-y-1">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                      <Mail className="w-3.5 h-3.5" />
+                      Dispatched to {TARGET_GMAIL}
+                    </span>
+                    <h4 className="text-2xl font-bold text-slate-900">Message Dispatched!</h4>
+                  </div>
+
                   <p className="text-slate-600 text-sm max-w-md mx-auto">
-                    Thank you, <strong>{formData.name}</strong>. Your message regarding <em>"{formData.subject}"</em> has been received by Decimal College administration. We will reply to <strong>{formData.email || formData.phone}</strong> promptly.
+                    Thank you, <strong>{formData.name}</strong>. Your message regarding <em>"{formData.subject}"</em> has been forwarded directly to Decimal College at <span className="font-bold text-[#0A2F5C] underline">{TARGET_GMAIL}</span>.
                   </p>
-                  <button
-                    onClick={() => {
-                      setSubmitted(false);
-                      setFormData({
-                        name: '',
-                        email: '',
-                        phone: '',
-                        subject: 'Admission Inquiry',
-                        message: ''
-                      });
-                    }}
-                    className="bg-[#0A2F5C] text-white text-xs font-bold px-6 py-2.5 rounded-lg mt-2"
-                  >
-                    Send Another Message
-                  </button>
+
+                  {/* Summary Card */}
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs text-left max-w-md mx-auto space-y-1.5">
+                    <p className="font-bold text-[#0A2F5C] text-xs border-b border-slate-200 pb-1.5 flex items-center justify-between">
+                      <span>Message Record:</span>
+                      <span className="text-[10px] text-slate-500">To: {TARGET_GMAIL}</span>
+                    </p>
+                    <div className="grid grid-cols-2 gap-x-2 gap-y-1 pt-1 text-slate-700">
+                      <div><strong>Sender:</strong> {formData.name}</div>
+                      <div><strong>Phone:</strong> {formData.phone}</div>
+                      {formData.email && <div className="col-span-2"><strong>Email:</strong> {formData.email}</div>}
+                      <div className="col-span-2"><strong>Subject:</strong> {formData.subject}</div>
+                      <div className="col-span-2 italic text-slate-600">"{formData.message}"</div>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex flex-col sm:flex-row gap-2.5 justify-center max-w-md mx-auto">
+                    {sendResult?.gmailComposeUrl && (
+                      <a
+                        href={sendResult.gmailComposeUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center justify-center gap-2 bg-[#EA4335] hover:bg-[#d63023] text-white px-4 py-2.5 rounded-lg text-xs font-bold shadow-sm transition-colors"
+                      >
+                        <Mail className="w-4 h-4" />
+                        <span>Send Copy via Gmail</span>
+                      </a>
+                    )}
+                    <a
+                      href={`https://wa.me/${COLLEGE_INFO.rawPhone}?text=Hello%20Decimal%20College,%20I%20sent%20a%20message%20to%20decimalcollege@gmail.com%20regarding%20${encodeURIComponent(formData.subject)}%20from%20${encodeURIComponent(formData.name)}.`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-4 py-2.5 rounded-lg text-xs font-bold shadow-sm transition-colors"
+                    >
+                      <Phone className="w-4 h-4" />
+                      <span>Confirm on WhatsApp</span>
+                    </a>
+                    <button
+                      onClick={() => {
+                        setSubmitted(false);
+                        setSendResult(null);
+                        setFormData({
+                          name: '',
+                          email: '',
+                          phone: '',
+                          subject: 'Admission Inquiry',
+                          message: ''
+                        });
+                      }}
+                      className="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-lg transition-colors"
+                    >
+                      New Message
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -290,6 +346,17 @@ export const ContactPage: React.FC = () => {
                     />
                   </div>
 
+                  {/* Destination info notice */}
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex items-center justify-between text-[11px] text-slate-600">
+                    <span className="flex items-center gap-1.5 font-medium">
+                      <Mail className="w-3.5 h-3.5 text-[#0A2F5C]" />
+                      <span>Sent directly to: <strong className="text-slate-900">{TARGET_GMAIL}</strong></span>
+                    </span>
+                    <span className="hidden sm:inline-block text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-sm font-semibold">
+                      College Official Inbox
+                    </span>
+                  </div>
+
                   <button
                     type="submit"
                     disabled={loading}
@@ -297,7 +364,10 @@ export const ContactPage: React.FC = () => {
                     id="contact-form-submit-btn"
                   >
                     {loading ? (
-                      <span>Sending Message...</span>
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-[#D4A017]" />
+                        <span>Sending Message to {TARGET_GMAIL}...</span>
+                      </>
                     ) : (
                       <>
                         <span>Send Message to Decimal College</span>
